@@ -1,0 +1,6 @@
+unique_id,tweet_id,tweet_text,tweet_created_at,sentiment,positive_score,neutral_score,negative_score,file_created_date,score,sentiment_desc
+dbcfb287-8fe8-4cc1-9199-b9baac839d63,1743251398349771019,#BI_Prof_Bbsr  i would definitely follow your principles,2024-01-05 18:11:36,neutral,0.34,0.64,0.02,2024-01-05 18:12:09,6.4,Positively Neutral
+19c4bfe4-2dee-4ca0-bda7-969306ce0400,1743251212093255861,#BI_Prof_Bbsr i really hate your opinions,2024-01-05 18:10:51,negative,0.03,0.1,0.87,2024-01-05 18:12:09,8.7,Extremely Negative
+a5d734ed-531a-4930-9750-4d87af85d4bb,1743251086981447810,#BI_Prof_Bbsr SpongeBob always had some deep scene's that we couldn't understand as kids,2024-01-05 18:10:21,neutral,0.18,0.53,0.29,2024-01-05 18:12:09,5.300000000000001,Negatively Neutral
+c9df25cc-7969-4f45-83cd-cf364253b1a4,1743250948003070386,"#BI_Prof_Bbsr Japan has an airport located literally in the ocean. It cost 20 billion dollars to build, but it's sinking..",2024-01-05 18:09:48,negative,0.02,0.38,0.6,2024-01-05 18:12:09,6.0,Moderately Negative
+ca18af14-5ece-4343-9537-919515bc00bd,1743250649310019907,#BI_Prof_Bbsr i would like to discuss something,2024-01-05 18:08:37,positive,0.71,0.27,0.02,2024-01-05 18:12:09,7.1,Positive
