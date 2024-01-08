@@ -42,18 +42,6 @@ def get_start_time():
     with open('last_fetch_datetime.txt') as f:
         start_time = f.readline()
 
-
-    
-
-
-
-
-
-
-    # df = pd.read_csv("last_fetch_datetime.csv")
-    # start_time = df['Last Fetch DateTime'][0]
-    # print(start_time)
-
     ist_timezone = pytz.timezone("Asia/Kolkata")
 
     ist_datetime = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
@@ -98,8 +86,9 @@ def comments_on_the_post(conversation_id):
 
     for reply in replies:
         # user_details = get_user_details(reply['author_id'])
-        print(f"  Text: {reply['text']}, Comment Time: {reply['created_at']}, Reply ID: {reply['id']}, Author ID: {reply['author_id']}")
         print("-" * 50)
+        print(f"  Text: {reply['text']}, Comment Time: {reply['created_at']}, Reply ID: {reply['id']}, Author ID: {reply['author_id']}")
+        
 
     print("*" * 100)
 
