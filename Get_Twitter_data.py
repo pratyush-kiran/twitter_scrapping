@@ -271,7 +271,8 @@ df['score'] = df.apply(lambda row: max(row['positive_score'], row['negative_scor
 
 df['sentiment_desc'] = df.apply(get_sentiment_desc, axis=1)
        
-
+#wow
+a = 10
 
 #insert unto postgres
 insert_data_into_postgres()
