@@ -1,21 +1,34 @@
-def swap_1_and_0(n):
-    if n == 1: n = 0
-    else : n = 1
-    print(n)
+import pandas as pd
+import pytz
+from datetime import datetime, timedelta
 
-def main():
-    n = 5
-    # for i in range(5):
-    #     for j in range(i+1):
-    #         print("*", end = "")
-    #     print()
-    j = 1
-    for i in range(n):
-        print("*" * j, end = "")
-        j = j + 1
-        print()
+# def capture_last_fetch_datetime():
+#     last_fetch_datetime_data = [{
+#         "Last Fetch DateTime" : File_Created_Date
+#     }]
+
+#     last_fetch_datetime_df = pd.DataFrame(last_fetch_datetime_data)
+#     last_fetch_datetime_df.to_csv('last_fetch_datetime.csv', index=False)
+#     print("Last fetch date captured :", File_Created_Date)
 
 
 
-if __name__ == '__main__':
-    main()
+def get_start_time():
+    df = pd.read_csv("last_fetch_datetime.csv")
+    start_time = df['Last Fetch DateTime'][0]
+
+    ist_timezone = pytz.timezone("Asia/Kolkata")
+
+    # Convert string to datetime object in IST
+    ist_datetime = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+    ist_datetime = ist_timezone.localize(ist_datetime)
+
+    # Convert to UTC
+    utc_datetime = ist_datetime.astimezone(pytz.utc)
+
+    # Format as "%Y-%m-%dT%H:%M:%S.%fZ"
+    formatted_utc_str = utc_datetime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+    
+    return formatted_utc_str
+
+print(get_start_time())

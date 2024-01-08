@@ -62,11 +62,11 @@ def insert_data_into_postgres():
     engine = create_engine(db_url)
 
     # DELETE data for the current date from the table
-    delete_curdate_data = text("DELETE FROM twitter_messages WHERE date(file_created_date) = current_date")
+    # delete_curdate_data = text("DELETE FROM twitter_messages WHERE date(file_created_date) = current_date")
 
 
     with engine.connect() as connection:
-        connection.execute(delete_curdate_data)
+        # connection.execute(delete_curdate_data)
 
         # Assuming 'df' is your DataFrame
         for index, row in df.iterrows():
@@ -168,6 +168,21 @@ def get_timeline_info(user_id):
 def get_replies(conversation_id):
     return replies.comments_on_the_post(conversation_id)
 
+def capture_last_fetch_datetime():
+    last_fetch_datetime_data = [{
+        "Last Fetch DateTime" : File_Created_Date
+    }]
+
+    with open('last_fetch_datetime.txt', 'w') as f:
+        f.write(File_Created_Date)
+        
+
+
+    last_fetch_datetime_df = pd.DataFrame(last_fetch_datetime_data)
+    last_fetch_datetime_df.to_csv('last_fetch_datetime.csv', index=False)
+    print("Last fetch date captured :", File_Created_Date)
+
+
 # # Example username
 username = "BI_Prof_Bbsr"
 user_id = 1738210505867882496
@@ -182,13 +197,19 @@ account_info = get_account_level_info(username)
 timeline_info = get_timeline_info(user_id)
 
 
+
+
+
+
+
 # Create lists to store data
 data = []
 
 # Loop through tweets in the timeline
 for tweet in timeline_info:
 
-    print(tweet)
+    print("Tweet :", tweet['text'])
+    print("Created at :", tweet['created_at'])
     # Get conversation ID
     conversation_id = tweet['conversation_id']
 
@@ -242,50 +263,51 @@ for tweet in timeline_info:
 # Create a DataFrame from the collected data
 df = pd.DataFrame(data)
 
-# Generate unique IDs using uuid and add them as a new column 'unique_id'
-df['unique_id'] = [str(uuid.uuid4()) for _ in range(len(df))]
+if not df.empty:
+    # Generate unique IDs using uuid and add them as a new column 'unique_id'
+    df['unique_id'] = [str(uuid.uuid4()) for _ in range(len(df))]
 
-# Set 'unique_id' as the first column
-df = df[['unique_id'] + [col for col in df if col != 'unique_id']]
+    # Set 'unique_id' as the first column
+    df = df[['unique_id'] + [col for col in df if col != 'unique_id']]
 
-# Convert 'tweet_created_at' to a datetime object
-df['tweet_created_at'] = pd.to_datetime(df['tweet_created_at'], format='%Y-%m-%dT%H:%M:%S.%fZ')
+    # Convert 'tweet_created_at' to a datetime object
+    df['tweet_created_at'] = pd.to_datetime(df['tweet_created_at'], format='%Y-%m-%dT%H:%M:%S.%fZ')
 
-# Convert 'tweet_created_at' to IST
-df['tweet_created_at'] = df['tweet_created_at'].dt.tz_localize(timezone.utc).dt.tz_convert(ist_timezone)
+    # Convert 'tweet_created_at' to IST
+    df['tweet_created_at'] = df['tweet_created_at'].dt.tz_localize(timezone.utc).dt.tz_convert(ist_timezone)
 
-# Format the 'tweet_created_at' column in the desired format
-df['tweet_created_at'] = df['tweet_created_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
+    # Format the 'tweet_created_at' column in the desired format
+    df['tweet_created_at'] = df['tweet_created_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
 
-# Convert 'Reply Created at' to a datetime object
-df['reply_created_at'] = pd.to_datetime(df['reply_created_at'], format='%Y-%m-%dT%H:%M:%S.%fZ')
+    # Convert 'Reply Created at' to a datetime object
+    df['reply_created_at'] = pd.to_datetime(df['reply_created_at'], format='%Y-%m-%dT%H:%M:%S.%fZ')
 
-# Convert 'Reply Created at' to IST
-df['reply_created_at'] = df['reply_created_at'].dt.tz_localize(timezone.utc).dt.tz_convert(ist_timezone)
+    # Convert 'Reply Created at' to IST
+    df['reply_created_at'] = df['reply_created_at'].dt.tz_localize(timezone.utc).dt.tz_convert(ist_timezone)
 
-# Format the 'Reply Created at' column in the desired format
-df['reply_created_at'] = df['reply_created_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
+    # Format the 'Reply Created at' column in the desired format
+    df['reply_created_at'] = df['reply_created_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
 
-# Getting Max Score
-df['score'] = df.apply(lambda row: max(row['positive_score'], row['negative_score'], row['neutral_score']), axis=1)*10
+    # Getting Max Score
+    df['score'] = df.apply(lambda row: max(row['positive_score'], row['negative_score'], row['neutral_score']), axis=1)*10
 
-df['sentiment_desc'] = df.apply(get_sentiment_desc, axis=1)
+    df['sentiment_desc'] = df.apply(get_sentiment_desc, axis=1)
        
-#wow
-a = 10
 
-#insert unto postgres
-insert_data_into_postgres()
+    #insert unto postgres
+    insert_data_into_postgres()
 
-# migrate_to_azure_blob()
+    # migrate_to_azure_blob()
 
 
 
 # ############### Storing into a CSV file locally #######################
 
-# Save DataFrame to CSV
-df.to_csv('output_file.csv', index=False)
-print("DataFrame stored in local storage succesfully !")
+    # Save DataFrame to CSV
+    df.to_csv('output_file.csv', index=False)
+    print("DataFrame stored in local storage succesfully !")
 
 # Display the DataFrame
 # print(df)
+
+capture_last_fetch_datetime()
