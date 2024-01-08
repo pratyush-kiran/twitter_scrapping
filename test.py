@@ -1,7 +1,21 @@
-import pandas as pd # Read the CSV file
-csv_file_path = 'output_file.csv'
-existing_tweet_ids_df = pd.read_csv(csv_file_path)
+def swap_1_and_0(n):
+    if n == 1: n = 0
+    else : n = 1
+    print(n)
 
-# Extract 'tweet_id' values into a set for faster lookup
-existing_tweet_ids_set = set(existing_tweet_ids_df['reply_id'].tolist())
-print(existing_tweet_ids_set)
+def main():
+    n = 5
+    # for i in range(5):
+    #     for j in range(i+1):
+    #         print("*", end = "")
+    #     print()
+    j = 1
+    for i in range(n):
+        print("*" * j, end = "")
+        j = j + 1
+        print()
+
+
+
+if __name__ == '__main__':
+    main()

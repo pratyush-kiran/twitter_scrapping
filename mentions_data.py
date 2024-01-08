@@ -17,8 +17,8 @@ FileNameVariable = current_date_time.strftime("%Y%m%d%H%M%S")
 File_Created_Date = current_date_time.strftime("%Y-%m-%d %H:%M:%S")
 
 bearer_token = 'AAAAAAAAAAAAAAAAAAAAACxfrgEAAAAAy0a%2FEp%2Fc5Y21NycWWC1%2FENMd6is%3DhsICamrd4pjy00xIvGAUrFmGhLxH2CXXlwTMY7U5q7icNWFH8r'
-user_id = 1738210505867882496 #BI_PROF_BBSR
-# user_id = 861455487966912512 #PRATHAP KESHARI DEV
+# user_id = 1738210505867882496 #BI_PROF_BBSR
+user_id = 861455487966912512 #PRATHAP KESHARI DEV
 
 def get_sentiment_desc(row1):
     if  row1['score']>=8 and row1['sentiment']=='neutral':
@@ -57,7 +57,6 @@ def insert_data_into_postgres():
     with engine.connect() as connection:
         connection.execute(delete_curdate_data)
 
-        # Assuming 'df' is your DataFrame
         for index, row in df.iterrows():
             query = text("""
 
